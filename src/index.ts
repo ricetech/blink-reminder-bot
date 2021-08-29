@@ -1,6 +1,6 @@
 // noinspection JSIgnoredPromiseFromCall
 
-import dotenv from "dotenv";
+import { config as dotenvConfig } from "dotenv";
 import { Client, Collection, Intents } from "discord.js";
 
 import { DataTypes, Sequelize } from "sequelize";
@@ -9,7 +9,7 @@ import { readdirSync } from "fs";
 import { CommandClient } from "./types/CommandClient";
 import { CommandDef } from "./types/CommandDef";
 
-dotenv.config();
+dotenvConfig();
 
 const client: CommandClient = new Client({
   intents: [
