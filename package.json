@@ -15,7 +15,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon",
-    "build": "npx tsc index.ts",
+    "build": "npx tsc src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "author": "ricetech",
