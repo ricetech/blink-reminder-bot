@@ -19,14 +19,16 @@ const setIntervalCommand = {
     const interval = interaction.options.getInteger("interval", true);
 
     if (interval < 1) {
-      await interaction.reply(
-        "Error: Please use an interval of greater than zero minutes."
-      );
+      await interaction.reply({
+        content: "Error: Please use an interval of greater than zero minutes.",
+        ephemeral: true,
+      });
       return;
     } else if (interval > 1440) {
-      await interaction.reply(
-        "Error: Please use an interval of less than 1440 minutes."
-      );
+      await interaction.reply({
+        content: "Error: Please use an interval of less than 1440 minutes.",
+        ephemeral: true,
+      });
       return;
     }
 
@@ -36,11 +38,16 @@ const setIntervalCommand = {
     );
 
     if (updatedRows[0] > 0) {
-      await interaction.reply("Interval updated successfully.");
+      await interaction.reply({
+        content: "Interval updated successfully.",
+        ephemeral: true,
+      });
     } else {
-      await interaction.reply(
-        "Error: User profile not found. Please create one using the `/reminders on` command."
-      );
+      await interaction.reply({
+        content:
+          "Error: User profile not found. Please create one using the `/reminders on` command.",
+        ephemeral: true,
+      });
     }
   },
 };

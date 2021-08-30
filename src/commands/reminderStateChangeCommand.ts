@@ -30,13 +30,15 @@ const reminderStateChangeCommand = {
       );
       if (affectedRows[0] > 0) {
         if (enabled == userConfig.get("enabled")) {
-          await interaction.reply(
-            `Your blink reminders were already ${state}. Nothing was changed.`
-          );
+          await interaction.reply({
+            content: `Your blink reminders were already ${state}. Nothing was changed.`,
+            ephemeral: true,
+          });
         } else {
-          await interaction.reply(
-            `Your blink reminders are now turned ${state}.`
-          );
+          await interaction.reply({
+            content: `Your blink reminders are now turned ${state}.`,
+            ephemeral: true,
+          });
         }
       }
     } else {
@@ -46,14 +48,16 @@ const reminderStateChangeCommand = {
           enabled: enabled,
           interval: DEFAULT_INTERVAL_MINS * 60,
         });
-        await interaction.reply(
-          `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using \`/setinterval\`.`
-        );
+        await interaction.reply({
+          content: `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using \`/setinterval\`.`,
+          ephemeral: true,
+        });
       } catch (e) {
         console.error(e);
-        return interaction.reply(
-          "Something went wrong with creating your profile."
-        );
+        return interaction.reply({
+          content: "Something went wrong with creating your profile.",
+          ephemeral: true,
+        });
       }
     }
   },
