@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { UserConfigModel } from "../db";
+import { ReminderManager } from "../ReminderManager";
 
 export const DEFAULT_INTERVAL_MINS = 20;
 
@@ -35,6 +36,14 @@ const reminderStateChangeCommand = {
             ephemeral: true,
           });
         } else {
+          if (enabled) {
+            await ReminderManager.getInstance().updateReminder(
+              uid,
+              <number>userConfig.get("interval")
+            );
+          } else {
+            await ReminderManager.getInstance().deleteReminder(uid);
+          }
           await interaction.reply({
             content: `Your blink reminders are now turned ${state}.`,
             ephemeral: true,
@@ -48,6 +57,14 @@ const reminderStateChangeCommand = {
           enabled: enabled,
           interval: DEFAULT_INTERVAL_MINS * 60,
         });
+        if (enabled) {
+          await ReminderManager.getInstance().updateReminder(
+            uid,
+            DEFAULT_INTERVAL_MINS * 60
+          );
+        } else {
+          await ReminderManager.getInstance().deleteReminder(uid);
+        }
         await interaction.reply({
           content: `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using \`/setinterval\`.`,
           ephemeral: true,

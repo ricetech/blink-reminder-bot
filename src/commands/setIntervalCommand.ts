@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { UserConfigModel } from "../db";
+import { ReminderManager } from "../ReminderManager";
 
 const setIntervalCommand = {
   data: new SlashCommandBuilder()
@@ -38,10 +39,23 @@ const setIntervalCommand = {
     );
 
     if (updatedRows[0] > 0) {
-      await interaction.reply({
-        content: "Interval updated successfully.",
-        ephemeral: true,
-      });
+      // Update reminder if it exists.
+      // No presence check required since the user must have been online to send the command.
+      const userConfig = await UserConfigModel.findOne({ where: { uid: uid } });
+      if (userConfig && userConfig.get("enabled")) {
+        await ReminderManager.getInstance().updateReminder(uid, interval);
+        await interaction.reply({
+          content:
+            "Interval updated successfully. A new reminder has been set.",
+          ephemeral: true,
+        });
+      } else {
+        await interaction.reply({
+          content:
+            "Error: Interval updated in database but a new reminder could not be set. Contact the developer.",
+        });
+        console.error("Reminder could not be set in setIntervalCommand");
+      }
     } else {
       await interaction.reply({
         content:

@@ -9,6 +9,7 @@ import { UserConfigModel } from "./db";
 
 import { CommandClient } from "./types/CommandClient";
 import { CommandDef } from "./types/CommandDef";
+import { ReminderManager } from "./ReminderManager";
 
 dotenvConfig();
 
@@ -33,14 +34,26 @@ for (const file of commandFiles) {
 // Startup code
 client.once("ready", () => {
   UserConfigModel.sync();
+  ReminderManager.getInstance().init(client);
   console.log("Ready!");
 });
 
 // Presence Update handler
-client.on("presenceUpdate", (oldPresence, newPresence) => {
-  console.log(
-    "Presence update for " + newPresence.user?.tag + ": " + newPresence.status
-  );
+client.on("presenceUpdate", async (oldPresence, newPresence) => {
+  const userConfig = await UserConfigModel.findOne({
+    where: { uid: newPresence.userId },
+  });
+  if (
+    userConfig &&
+    userConfig.get("enabled") &&
+    newPresence.status != "offline" &&
+    newPresence.status != "idle"
+  ) {
+    await ReminderManager.getInstance().updateReminder(
+      newPresence.userId,
+      <number>userConfig.get("interval")
+    );
+  }
 });
 
 // Slash command handler
