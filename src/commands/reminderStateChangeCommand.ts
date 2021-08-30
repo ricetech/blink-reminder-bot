@@ -47,7 +47,7 @@ const reminderStateChangeCommand = {
           interval: DEFAULT_INTERVAL_MINS * 60,
         });
         await interaction.reply(
-          `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using /setinterval.`
+          `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using \`/setinterval\`.`
         );
       } catch (e) {
         console.error(e);
