@@ -10,6 +10,7 @@ export const db = new Sequelize("BlinkReminderBot", "user", "", {
 export const UserConfigModel = db.define("UserConfig", {
   // Discord User ID
   uid: {
+    primaryKey: true,
     type: DataTypes.STRING,
     unique: true,
   },
