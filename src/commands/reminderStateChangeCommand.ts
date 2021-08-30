@@ -50,6 +50,7 @@ const reminderStateChangeCommand = {
           `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using /setinterval.`
         );
       } catch (e) {
+        console.error(e);
         return interaction.reply(
           "Something went wrong with creating your profile."
         );
