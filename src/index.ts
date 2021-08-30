@@ -3,8 +3,9 @@
 import { config as dotenvConfig } from "dotenv";
 import { Client, Collection, Intents } from "discord.js";
 
-import { DataTypes, Sequelize } from "sequelize";
 import { readdirSync } from "fs";
+
+import { UserConfigModel } from "./db";
 
 import { CommandClient } from "./types/CommandClient";
 import { CommandDef } from "./types/CommandDef";
@@ -19,29 +20,6 @@ const client: CommandClient = new Client({
   ],
 });
 
-const db = new Sequelize("BlinkReminderBot", "user", "", {
-  host: "localhost",
-  dialect: "sqlite",
-  logging: false,
-  storage: "BlinkReminderBot.sqlite",
-});
-
-const UserConfig = db.define("UserConfig", {
-  // Discord User ID
-  uid: {
-    type: DataTypes.STRING,
-    unique: true,
-  },
-  // Blink Reminder Messages enabled
-  enabled: {
-    type: DataTypes.BOOLEAN,
-  },
-  // Interval between messages in seconds
-  interval: {
-    type: DataTypes.INTEGER,
-  },
-});
-
 // Register commands
 client.commands = new Collection();
 const commandFiles = readdirSync("./src/commands").filter((file) =>
@@ -54,7 +32,7 @@ for (const file of commandFiles) {
 
 // Startup code
 client.once("ready", () => {
-  UserConfig.sync();
+  UserConfigModel.sync();
   console.log("Ready!");
 });
 
