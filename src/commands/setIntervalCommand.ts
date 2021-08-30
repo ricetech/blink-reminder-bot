@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { BaseCommandInteraction } from "discord.js";
+import { CommandInteraction } from "discord.js";
 
 const setIntervalCommand = {
   data: new SlashCommandBuilder()
@@ -13,7 +13,7 @@ const setIntervalCommand = {
         .setDescription("Time between blink reminders in minutes")
         .setRequired(true)
     ),
-  async execute(interaction: BaseCommandInteraction) {
+  async execute(interaction: CommandInteraction) {
     await interaction.reply("Command 'setinterval' not implemented yet!");
   },
 };

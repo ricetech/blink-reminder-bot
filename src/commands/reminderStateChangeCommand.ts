@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { BaseCommandInteraction } from "discord.js";
+import { CommandInteraction } from "discord.js";
 
 const reminderStateChangeCommand = {
   data: new SlashCommandBuilder()
@@ -13,7 +13,7 @@ const reminderStateChangeCommand = {
         .addChoice("on", "on")
         .addChoice("off", "off")
     ),
-  async execute(interaction: BaseCommandInteraction) {
+  async execute(interaction: CommandInteraction) {
     await interaction.reply("Command 'reminders' not implemented yet!");
   },
 };
