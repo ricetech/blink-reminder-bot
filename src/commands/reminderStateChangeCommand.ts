@@ -2,6 +2,8 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { UserConfigModel } from "../db";
 
+export const DEFAULT_INTERVAL_MINS = 20;
+
 const reminderStateChangeCommand = {
   data: new SlashCommandBuilder()
     .setName("reminders")
@@ -42,10 +44,10 @@ const reminderStateChangeCommand = {
         await UserConfigModel.create({
           uid: uid,
           enabled: enabled,
-          interval: 20,
+          interval: DEFAULT_INTERVAL_MINS * 60,
         });
         await interaction.reply(
-          `Your blink reminders are now turned ${state}.`
+          `Your blink reminders are now turned ${state} and your reminder interval has been set to 20 minutes. You can change the reminder interval using /setinterval.`
         );
       } catch (e) {
         return interaction.reply(
