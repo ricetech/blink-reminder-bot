@@ -47,16 +47,19 @@ client.on("presenceUpdate", async (oldPresence, newPresence) => {
   const userConfig = await UserConfigModel.findOne({
     where: { uid: newPresence.userId },
   });
-  if (
-    userConfig &&
-    userConfig.get("enabled") &&
-    newPresence.status != "offline" &&
-    newPresence.status != "idle"
-  ) {
-    await ReminderManager.getInstance().updateReminder(
-      newPresence.userId,
-      <number>userConfig.get("interval")
-    );
+  if (userConfig) {
+    if (
+      userConfig.get("enabled") &&
+      newPresence.status != "offline" &&
+      newPresence.status != "idle"
+    ) {
+      await ReminderManager.getInstance().updateReminder(
+        newPresence.userId,
+        <number>userConfig.get("interval")
+      );
+    } else {
+      await ReminderManager.getInstance().deleteReminder(newPresence.userId);
+    }
   }
 });
 
