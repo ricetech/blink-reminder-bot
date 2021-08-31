@@ -39,7 +39,7 @@ for (const file of commandFiles) {
 client.once("ready", () => {
   UserConfigModel.sync();
   ReminderManager.getInstance().init(client);
-  console.log("Ready!");
+  console.log("Blink Reminder Bot is Ready!");
 });
 
 // Presence Update handler
