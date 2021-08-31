@@ -23,8 +23,12 @@ const client: CommandClient = new Client({
 
 // Register commands
 client.commands = new Collection();
-const commandFiles = readdirSync("./src/commands").filter((file) =>
-  file.endsWith("Command.ts")
+
+const commandFilesPath =
+  process.env.PROD === "true" ? "./commands" : "./src/commands";
+
+const commandFiles = readdirSync(commandFilesPath).filter(
+  (file) => file.endsWith("Command.ts") || file.endsWith("Command.js")
 );
 for (const file of commandFiles) {
   const command: CommandDef = require(`./commands/${file}`).default;

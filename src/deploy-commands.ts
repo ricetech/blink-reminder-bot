@@ -6,9 +6,11 @@ import { config as dotenvConfig } from "dotenv";
 
 dotenvConfig();
 
+const commandFilesPath =
+  process.env.PROD === "true" ? "./commands" : "./src/commands";
 const commands: CommandDef[] = [];
-const commandFiles = readdirSync("./src/commands").filter((file) =>
-  file.endsWith("Command.ts")
+const commandFiles = readdirSync(commandFilesPath).filter(
+  (file) => file.endsWith("Command.ts") || file.endsWith("Command.js")
 );
 
 for (const file of commandFiles) {
